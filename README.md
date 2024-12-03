@@ -28,3 +28,20 @@ fs.writeFileSync('./txt/output.txt', textOut);
 console.log('File written!');
 ```
 
+# Naturaleza Asincrónica de Node.js
+
+Node.js es un entorno de ejecución de **hilo único**, diseñado para manejar aplicaciones escalables y de alto rendimiento. Sin embargo, esta arquitectura puede generar problemas cuando se ejecuta **código sincrónico bloqueante**, ya que **bloquea** la ejecución de todas las operaciones mientras se espera que una tarea termine.
+
+## Sincronía vs Asincronía
+
+- **Código Sincrónico (Bloqueante)**: Cada operación debe completarse antes de pasar a la siguiente.
+- **Código Asincrónico (No Bloqueante)**: Las tareas pesadas se ejecutan en segundo plano, permitiendo que el resto del código continúe ejecutándose.
+
+### Ejemplo 1: Código Sincrónico
+
+```js
+const fs = require('fs');
+const data = fs.readFileSync('archivo.txt', 'utf-8'); // Bloquea el hilo
+console.log('Archivo leído:', data); // No se ejecuta hasta que el archivo es leído
+```
+
