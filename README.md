@@ -89,3 +89,21 @@ fs.readFile('./txt/start.txt', 'utf-8', (_, data1) => {
 console.log('Se leerá el archivo!');
 ```
 
+## Servidor HTTP Básico
+
+Este es un ejemplo sencillo de un servidor HTTP creado con Node.js. El servidor escucha peticiones en el puerto 8000 y responde con un mensaje.
+
+### Código
+
+```javascript
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+	res.end('Hello from server!');
+});
+
+server.listen(8000, '127.0.0.1', () => {
+	console.log('Listening to request on port 8000.');
+});
+```
+
