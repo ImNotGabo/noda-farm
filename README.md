@@ -45,3 +45,47 @@ const data = fs.readFileSync('archivo.txt', 'utf-8'); // Bloquea el hilo
 console.log('Archivo leído:', data); // No se ejecuta hasta que el archivo es leído
 ```
 
+## Lectura y Escritura de Archivos Asíncrona en Node.js
+
+Este ejemplo muestra cómo trabajar con archivos de manera **asíncrona** en Node.js utilizando el módulo `fs`.
+
+### Explicación:
+
+- **Lectura Asíncrona**: Usamos `fs.readFile` para leer archivos sin bloquear el hilo principal.
+- **Escritura Asíncrona**: Con `fs.writeFile`, escribimos en un archivo de manera no bloqueante.
+- **Encadenamiento de Lecturas**: Se leen varios archivos en secuencia, donde el resultado de una lectura se pasa como entrada a la siguiente.
+
+### Ejemplo de Código:
+
+```javascript
+const fs = require('fs');
+
+// Leer el archivo start.txt, obtener el nombre del siguiente archivo y leerlo
+fs.readFile('./txt/start.txt', 'utf-8', (_, data1) => {
+	fs.readFile(`./txt/${data1}.txt`, 'utf-8', (_, data2) => {
+		console.log(data2);
+
+		// Leer append.txt y combinar el contenido con el archivo anterior
+		fs.readFile('./txt/append.txt', 'utf-8', (_, data3) => {
+			console.log(data3);
+
+			// Escribir el contenido combinado en final.txt
+			fs.writeFile(
+				'./txt/final.txt',
+				`${data2}\n${data3}`,
+				'utf-8',
+				(error) => {
+					if (error) {
+						console.error(error);
+					} else {
+						console.log('Archivo escrito con éxito');
+					}
+				}
+			);
+		});
+	});
+});
+
+console.log('Se leerá el archivo!');
+```
+
