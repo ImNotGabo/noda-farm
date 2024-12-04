@@ -107,3 +107,30 @@ server.listen(8000, '127.0.0.1', () => {
 });
 ```
 
+## Routing en Node.js
+
+El _routing_ en Node.js se refiere al proceso de manejar diferentes rutas en un servidor HTTP. Permite responder con distintos contenidos según la URL solicitada por el cliente. En el siguiente ejemplo, se configuran rutas básicas para `/overview` y `/product`, devolviendo mensajes diferentes. Si la ruta no coincide con ninguna de las definidas, se devuelve un mensaje de error 404 con un encabezado personalizado:
+
+```javascript
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+	const pathName = req.url;
+
+	if (pathName === '/' || pathName === '/overview') {
+		res.end('This is OVERVIEW');
+	} else if (pathName === '/product') {
+		res.end('This is PRODUCT');
+	} else {
+		res.writeHead(404, {
+			'Content-type': 'text/html',
+			'my-own-header': 'hello-world',
+		});
+		res.end('<h1>Page not found</h1>');
+	}
+});
+
+server.listen(8000, '127.0.0.1', () => {
+	console.log('Listening to request on port 8000.');
+});
+```
