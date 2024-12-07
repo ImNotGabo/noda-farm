@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
-const url = require('url');
+const { URL } = require('url');
+// const url = require('url'); // Deprecated
 
 //////////////////////////////////////////
 // FILES
@@ -73,8 +74,9 @@ const replaceTemplate = (template, product) => {
 };
 
 const server = http.createServer((req, res) => {
-	console.log(req.url);
-	const pathName = req.url;
+	const BASE_URL = `http://127.0.0.1:8000`;
+	const myURL = new URL(`${BASE_URL}${req.url}`);
+	const { searchParams, pathname: pathName } = myURL;
 
 	// Overview page
 	if (pathName === '/' || pathName === '/overview') {
@@ -90,7 +92,12 @@ const server = http.createServer((req, res) => {
 
 		// Product page
 	} else if (pathName === '/product') {
-		res.end('This is the PRODUCT');
+		const product = productData.find(
+			(element) => element.id === +searchParams.get('id')
+		);
+		console.log(searchParams);
+		output = replaceTemplate(templateProduct, product);
+		res.end(output);
 
 		// API
 	} else if (pathName === '/api') {
